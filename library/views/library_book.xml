@@ -1,0 +1,63 @@
+<odoo>
+
+    <!-- library.book form view -->
+    <record id="library.book_view_form" model="ir.ui.view">
+        <field name="name">library.book.view.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="price"/>
+                            <field name="edition"/>
+                            <field name="book_type"/>
+                        </group>
+                        <group>
+                            <field name="is_purchased"/>
+                            <field name="time_purchased"/>
+                            <field name="url"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- library.book tree view -->
+    <record id="library.book_view_tree" model="ir.ui.view">
+        <field name="name">library.book.view.tree</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="price"/>
+                <field name="url"/>
+                
+            </tree>
+        </field>
+    </record>
+
+    <!-- library.book action window -->
+    <record id="library.book_action" model="ir.actions.act_window">
+        <field name="name">Library</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No books found! You can add a new one.     
+            </p>
+        </field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem name="Library"
+        id="library_main_menu"
+        action="library.book_action"
+        web_icon="library,static/menu_library.png"
+        sequence="7"/>
+
+
+</odoo>
