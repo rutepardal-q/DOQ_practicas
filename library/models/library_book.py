@@ -11,3 +11,4 @@ class LibraryBook(models.Model):
     url = fields.Char(string="Url")
     is_purchased = fields.Boolean(string="Purchased", default= False)
     time_purchased = fields.Datetime(string = "Time Purchased")
+    
