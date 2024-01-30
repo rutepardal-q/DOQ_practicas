@@ -1,1 +1,1 @@
-from . import library_book
+from . import library_book, res_partner, library_bookgenre
