@@ -9,17 +9,35 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="is_pack"/>
                             <field name="name"/>
-                            <field name="price"/>
-                            <field name="edition"/>
-                            <field name="book_type"/>
+                            <field name="url" 
+                                    invisible="is_pack == True"/>
+                            <field name="product_id"/>
+                            <field name="edition"
+                                    invisible="is_pack == True"/>
+                            <field name="contact_id"/>
+                            <field name="genre_id"
+                                widget="many2many_tags"/>
                         </group>
                         <group>
+                            <field name="book_type"/>
+                            <field name="price"/>
                             <field name="is_purchased"/>
                             <field name="time_purchased"/>
-                            <field name="url"/>
                         </group>
                     </group>
+                    <notebook invisible="is_pack == False">
+                        <!-- Sheet for components -->
+                        <page string="Component List">
+                            <!-- Display the components using a Many2many_tags widget -->
+                            <group>
+                                <field name= "component_ids"
+                                    options="{'no_create_edit': True}"
+                                widget="many2many_tags"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -32,9 +50,15 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
-                <field name="price"/>
+                <field name="is_pack"/>
+                <field 
+                    name= "component_ids" 
+                    widget="many2many_tags"/>
                 <field name="url"/>
-                
+                <field name="product_id"/>
+                <field name="contact_id"/>
+                <field name="genre_id"
+                    widget="many2many_tags"/>
             </tree>
         </field>
     </record>
@@ -58,6 +82,42 @@
         action="library.book_action"
         web_icon="library,static/menu_library.png"
         sequence="7"/>
+
+
+<!-- library.book inherit search view 
+<record id="view_pickingtype_filter" model="ir.ui.view">
+    <field name="name">library.book.inherit.view.search</field>
+    <field name="model">library.book</field>
+    <field name="inherit_id" ref="stock.view_pickingtype_filter"/>
+    <field name="arch" type="xml">
+        <xpath expr="//filter[@name='inactive']" position="after">
+            <filter string="Pack" name="is_pack" domain="[('is_pack','=',True]"/>
+        </xpath>
+    </field>
+</record>
+-->
+
+<!-- library.book search view -->
+<record id="library.book_view_search" model="ir.ui.view">
+    <field name="name">library.book.view.search</field>
+    <field name="model">library.book</field>
+    <field name="arch" type="xml">
+        <search string="Book Search">
+            <field name="name"/>
+            <field name="contact_id"/>
+            <field name="genre_id"/>
+            <field name="book_type"/>
+            <filter string="Packs" name="is_pack" domain="[('is_pack','=',True)]"/>
+            <filter string="Purchased" name="is_purchased" domain="[('is_purchased','=',True)]"/>
+        </search>
+    </field>
+</record>
+
+
+
+
+
+
 
 
 </odoo>

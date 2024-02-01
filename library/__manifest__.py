@@ -13,11 +13,12 @@
     "installable": True,
     "depends": ['base', 'product', 'sale'],
     "data": ["security/ir.model.access.csv",
-             "views/library_book.xml",
              "views/library_author.xml",
              "views/library_member.xml",
-             "views/library_bookgenre.xml",
+             "views/library_genre.xml",
              "views/res_partner.xml",
+             "views/library_component.xml",
+             "views/library_book.xml",
              "views/menus.xml"
              ],
 }
