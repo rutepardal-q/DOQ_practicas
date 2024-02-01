@@ -1,6 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_library_book,access.library.book,model_library_book,base.group_user,1,1,1,1
 access_res_partner,access.res.partner,model_res_partner,base.group_user,1,1,1,1
-access_library_bookgenre,access.library.bookgenre,model_library_bookgenre,base.group_user,1,1,1,1
+access_library_genre,access.library.genre,model_library_genre,base.group_user,1,1,1,1
+access_library_component,access.library.component,model_library_component,base.group_user,1,1,1,1
 
 
