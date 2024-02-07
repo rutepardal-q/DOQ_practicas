@@ -16,9 +16,9 @@
              "views/library_author.xml",
              "views/library_member.xml",
              "views/library_genre.xml",
+             "views/library_book.xml",
              "views/res_partner.xml",
              "views/library_component.xml",
-             "views/library_book.xml",
              "views/menus.xml"
              ],
 }

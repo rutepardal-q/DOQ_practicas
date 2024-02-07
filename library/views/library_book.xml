@@ -10,6 +10,7 @@
                     <group>
                         <group>
                             <field name="is_pack"/>
+                            <field name="pack" invisible="is_pack == False"/>
                             <field name="name"/>
                             <field name="url" 
                                     invisible="is_pack == True"/>
@@ -51,14 +52,8 @@
             <tree>
                 <field name="name"/>
                 <field name="is_pack"/>
-                <field 
-                    name= "component_ids" 
-                    widget="many2many_tags"/>
-                <field name="url"/>
                 <field name="product_id"/>
                 <field name="contact_id"/>
-                <field name="genre_id"
-                    widget="many2many_tags"/>
             </tree>
         </field>
     </record>
@@ -84,40 +79,25 @@
         sequence="7"/>
 
 
-<!-- library.book inherit search view 
-<record id="view_pickingtype_filter" model="ir.ui.view">
-    <field name="name">library.book.inherit.view.search</field>
-    <field name="model">library.book</field>
-    <field name="inherit_id" ref="stock.view_pickingtype_filter"/>
-    <field name="arch" type="xml">
-        <xpath expr="//filter[@name='inactive']" position="after">
-            <filter string="Pack" name="is_pack" domain="[('is_pack','=',True]"/>
-        </xpath>
-    </field>
-</record>
--->
 
-<!-- library.book search view -->
-<record id="library.book_view_search" model="ir.ui.view">
-    <field name="name">library.book.view.search</field>
-    <field name="model">library.book</field>
-    <field name="arch" type="xml">
-        <search string="Book Search">
-            <field name="name"/>
-            <field name="contact_id"/>
-            <field name="genre_id"/>
-            <field name="book_type"/>
-            <filter string="Packs" name="is_pack" domain="[('is_pack','=',True)]"/>
-            <filter string="Purchased" name="is_purchased" domain="[('is_purchased','=',True)]"/>
-        </search>
-    </field>
-</record>
+    <!-- library.book search view -->
+    <record id="library.book_view_search" model="ir.ui.view">
+        <field name="name">library.book.view.search</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <search string="Book Search">
+                <field name="name"/>
+                <field name="contact_id"/>
+                <field name="genre_id"/>
+                <field name="book_type"/>
+                <filter string="Packs" name="is_pack" domain="[('is_pack','=',True)]"/>
+                <filter string="Collection" name="pack" domain="[('is_pack','=',True),('pack', '=', 'collection')]"/>
+                <filter string="Series" name="pack" domain="[('is_pack','=',True),('pack', '=', 'series')]"/>
+                <filter string="Purchased" name="is_purchased" domain="[('is_purchased','=',True)]"/>
 
-
-
-
-
-
+            </search>
+        </field>
+    </record>
 
 
 </odoo>
