@@ -1,1 +1,1 @@
-from . import library_book, library_component, library_genre, res_partner, sale_order
+from . import library_book, library_component, library_genre, res_partner, sale_order, library_audit
