@@ -1,0 +1,10 @@
+<odoo>
+    <record id="action_view_partner_members" model="ir.actions.act_window">
+        <field name="name">Member</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('is_member', '=', True)]</field>
+        <field name="context">{'default_is_member': True}</field>
+    </record>
+
+</odoo>
