@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="0">
+
+ <!-- Create a new group for Library / Administrator -->
+    <record model="res.groups" id="group_library_administrator">
+        <field name="name">Library / Administrator</field>
+        <field name="category_id" ref="base.module_category_hidden"/> <!-- Specify the correct category_id -->
+    </record>
+
+    <!-- Restrict access to the library.audit model for the Library / Administrator group -->
+    <record model="ir.rule" id="rule_library_audit">
+        <field name="name">Library Audit Rule</field>
+        <field name="model_id" ref="library.model_library_audit"/> <!-- Specify the correct model_id -->
+        <field name="groups" eval="[(4, ref('group_library_administrator'))]"/>
+    </record>
+
+</data>
+</odoo>

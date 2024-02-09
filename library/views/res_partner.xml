@@ -1,0 +1,27 @@
+
+<odoo>
+    <!-- res.partner inherit form view -->
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">view_partner_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@id='individual']" position="attributes">
+                <attribute name="readonly">is_author or is_member</attribute> 
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="is_author"/>
+                <field name="is_member"/>
+                <field name="member_id" 
+                    invisible="is_member == False"/>
+                <field name="first_name" />
+                <field name="last_name" />
+                <field name="genre_ids" 
+                    widget="many2many_tags" 
+                    invisible="is_author == False"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

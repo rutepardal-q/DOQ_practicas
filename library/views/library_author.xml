@@ -1,0 +1,12 @@
+
+<odoo>
+    <record id="action_view_partner_authors" model="ir.actions.act_window">
+        <field name="name">Author</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('is_author', '=', True)]</field>
+        <field name="context">{'default_is_author': True}</field>
+    </record>
+
+</odoo>
+
