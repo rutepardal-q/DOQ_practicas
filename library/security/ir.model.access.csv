@@ -3,6 +3,7 @@ access_library_book,access.library.book,model_library_book,base.group_user,1,1,1
 access_res_partner,access.res.partner,model_res_partner,base.group_user,1,1,1,1
 access_sale_order,access.sale.order,model_sale_order,base.group_user,1,1,1,1
 access_library_genre,access.library.genre,model_library_genre,base.group_user,1,1,1,1
+access_library_audit,access.library.audit,model_library_audit,base.group_user,1,1,1,1
 access_library_component,access.library.component,model_library_component,base.group_user,1,1,1,1
 
 

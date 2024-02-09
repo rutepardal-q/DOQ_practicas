@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _ 
+from odoo import models, fields, api, exceptions, _ 
 
 class LibraryBook(models.Model):
     _name = "library.book"
@@ -41,5 +41,45 @@ class LibraryBook(models.Model):
         if not self.is_pack:
             self.pack = ""
 
-        
+    def create(self, values):
+        newbook = super(LibraryBook, self).create(values)
+
+        audit_values = {
+            'user_id': self.env.user.id,
+            'date': fields.Datetime.now(),
+            'operation': 'create',
+            'book_id': newbook.id,
+            }
+        self.env['library.audit'].create(audit_values)
+
+        return newbook 
+
+    def write(self, values):
+        chbook = super(LibraryBook, self).write(values)
+        audit_values = {
+            'user_id': self.env.user.id,
+            'date': fields.Datetime.now(),
+            'operation': 'write',
+            'book_id': self.id,
+        }
+        self.env['library.audit'].create(audit_values)
+
+        return chbook
     
+    def unlink(self):
+        delbook = super(LibraryBook, self).unlink()
+        audit_values = {
+            'user_id': self.env.user.id,
+            'date': fields.Datetime.now(),
+            'operation': 'unlink',
+            'book_id': self.id,
+        }
+        self.env['library.audit'].create(audit_values)
+
+        return delbook
+    
+    @api.constrains('price')
+    def _check_price(self):
+        for record in self:
+            if record.price < 0:
+                raise exceptions.ValidationError("The price should be positive!")
