@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="action_report_book" model="ir.actions.report">
+            <field name="name">Print Portfolio</field>
+            <field name="model">library.book</field>
+            <field name="report_type">qweb-pdf</field>
+
+            <field name="report_name">library.report_book_template</field>
+            <field name="report_file">library.report_book_template</field>
+
+            <field name="print_report_name">('Book: ' + object.name)</field>
+
+            <field name="binding_model_id" ref="library.model_library_book" />
+            <field name="binding_type">report</field>
+        </record>
+            
+    </data>
+
+
+</odoo>

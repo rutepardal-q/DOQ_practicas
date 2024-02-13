@@ -1,0 +1,36 @@
+
+
+<odoo>
+    <template id ="report_book_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="library.report_book_document"/>
+            </t>
+        </t>
+    </template>
+
+    <template id ="report_book_document">
+        <t t-call="web.external_layout">
+            <h1>
+                <span t-field="o.name" style="font-size: 20px;" />
+
+                <p t-if="o.synopsis">
+                    <strong>Synopsis:</strong> <span t-field="o.synopsis"  style="font-size: 15px;"/>
+                </p>
+                 
+                <p t-if="o.image_1920" >
+                    <img t-attf-src="data:image/*;base64,{{o.image_1920}}" style="max-width: 100px;"/>
+                </p>
+                 
+                <p t-if="o.contact_id">
+                    <strong>Author:</strong> <span t-field="o.contact_id" style="font-size: 15px;"/>
+                </p>
+
+                <p t-if="o.year">
+                    <strong>Year:</strong> <span t-field="o.year" style="font-size: 15px;"/>
+                </p>
+            </h1>
+        </t>
+    </template>
+
+</odoo>

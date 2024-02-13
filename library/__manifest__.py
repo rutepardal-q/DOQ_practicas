@@ -18,7 +18,11 @@
              "views/library_member.xml",
              "views/library_genre.xml",
              "views/library_audit.xml",
+             "views/layout.xml",
+             "views/report_book.xml",
+             "views/report_sale.xml",
              "views/library_book.xml",
+             "views/report_book_template.xml",
              "views/res_partner.xml",
              "views/library_component.xml",
              "views/menus.xml"

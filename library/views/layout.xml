@@ -1,0 +1,11 @@
+<odoo>
+    <template id="book_layout" inherit_id="web.external_layout_bold">
+        <xpath expr="//div[@class='col-1']" position="attributes">
+            <attribute name="class"/>            
+        </xpath>
+    </template>
+
+
+</odoo>
+
+

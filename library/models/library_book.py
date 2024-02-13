@@ -8,6 +8,9 @@ class LibraryBook(models.Model):
 
 
     name = fields.Char(string="Name", required=True)
+    synopsis = fields.Html(string='Synopsis')
+    year = fields.Integer(string='Published in')
+    
     price = fields.Float(string="Price")
     edition = fields.Integer(string="Edition")
     is_book= fields.Boolean(string="Book", default= True, readonly= True)
