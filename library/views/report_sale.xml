@@ -1,0 +1,20 @@
+
+
+<odoo>
+    <data>
+        <template id="book_report_sale_inherit" 
+                name="Show Member Number" 
+                inherit_id="sale.report_saleorder_document"
+                customize_show="True" 
+                priority="30">
+            <xpath expr="//div[@class='row mt-4 mb-2' and @id='informations']" 
+            position="inside">
+                <div t-if="doc.partner_id.member_id" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Member Number: </strong><br/>
+                    <span class="m-0" t-field="doc.partner_id.member_id">000000</span>
+                </div>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
