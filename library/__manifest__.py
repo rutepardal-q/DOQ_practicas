@@ -13,7 +13,7 @@
     "installable": True,
     "depends": ['base', 'product', 'sale'],
     "data": ["security/ir.model.access.csv",
-             "security/library_security.xml",
+           #  "security/library_security.xml",
 
             # "views/layout.xml",
 

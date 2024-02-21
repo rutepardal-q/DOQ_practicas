@@ -1,43 +1,18 @@
 <odoo>
 
-    <!-- library.audit form view 
-    <record id="library.audit_view_form" model="ir.ui.view">
-        <field name="name">library.audit.view.form</field>
-        <field name="model">library.audit</field>
-        <field name="arch" type="xml">
-            <form string="">
-                <sheet>
-                    <group>  
-                        <field name="date"/>
-                        <field name="book_id"/>
-                        <field name="operation"/>
-                        <field name="user_id"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
--->
-    <!-- library.audit tree view -->
-
-
     <record id="library.audit_view_tree" model="ir.ui.view">
         <field name="name">library.audit.view.tree</field>
         <field name="model">library.audit</field>
         <field name="arch" type="xml">
             <tree string="Audit" create="0" delete="0">
                 <field name="date"/>
-                <field name="book_id"/>
+                <field name="res_id"/>
+                <field name="res_mod"/>
                 <field name="operation"/>
                 <field name="user_id"/>
             </tree>
         </field>
     </record>
-
-<!--<field name="name" field_id="name_0"/>
-    <field name="code" field_id="code_0"/>
- -->
-
 
 
     <!-- library.audit action window -->

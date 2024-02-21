@@ -5,6 +5,8 @@ class LibraryBook(models.Model):
     _description = "Book Information"
 
     _inherits = {'product.product': 'product_id'}
+    _inherit = ['library.audit.mixing', 'mail.thread', 'mail.activity.mixin']
+
 
 # Book basics
     synopsis = fields.Html(string='Synopsis')
@@ -118,30 +120,7 @@ class LibraryBook(models.Model):
     rental_date = fields.Datetime(string='Rental Date', default=fields.Datetime.now)
     return_date = fields.Datetime(string='Return Date')
 
-    #Authors and rented books
-    """
-    author_rentedbooks = fields.Many2one('library.book', string="Author's Rented Books", compute='_compute_author_rentedbooks', store=True)
 
-    @api.depends('author_id')
-    def _compute_author_rentedbooks(self):
-        for book in self:
-            # Find all books by the author
-            author_books = self.env['library.book'].search([('author_id', '=', book.author_id.id)])
-
-            # Find all rentals of those books
-            rents = self.env['library.book'].search([('state', '=', 'renting'),('name', 'in', author_books.ids)])
-
-            # Use mapped to get the book from the recordset of rentals
-            rented_books = rents.mapped('name')
-
-            # Filter books that are not in the list of rentals
-            available_books = author_books - rented_books
-
-            # Set the result in the computed Many2one field
-            book.available_books = available_books and available_books[0] or False
-
-
-    """
 
     # AUDIT BOOKS
 
@@ -155,17 +134,17 @@ class LibraryBook(models.Model):
                                     vals['barcode'])
                 if len(vals['barcode']) != 13:
                     raise exceptions.UserError("The ISBN must to have 13 characters")        
-        newbooks = super().create(vals_list)
-        for newbook in newbooks:
-            audit_values = {
-                'user_id': self.env.user.id,
-                'date': fields.Datetime.now(),
-                'operation': 'create',
-                'book_id': newbook.id,
-                }
-            self.env['library.audit'].create(audit_values)
+        # newbooks = super().create(vals_list)
+        # for newbook in newbooks:
+        #     audit_values = {
+        #         'user_id': self.env.user.id,
+        #         'date': fields.Datetime.now(),
+        #         'operation': 'create',
+        #         'book_id': newbook.id,
+        #         }
+        #     self.env['library.audit'].create(audit_values)
 
-        return newbooks 
+        # return newbooks 
     
     # Change
     def write(self, values):
@@ -177,26 +156,26 @@ class LibraryBook(models.Model):
                                     values['barcode'])
                 if len(values['barcode']) != 13:
                     raise exceptions.UserError("The ISBN must to have 13 characters")       
-        chbook = super(LibraryBook, self).write(values)
-        audit_values = {
-            'user_id': self.env.user.id,
-            'date': fields.Datetime.now(),
-            'operation': 'write',
-            'book_id': self.id,
-        }
-        self.env['library.audit'].create(audit_values)
+        # chbook = super(LibraryBook, self).write(values)
+        # audit_values = {
+        #     'user_id': self.env.user.id,
+        #     'date': fields.Datetime.now(),
+        #     'operation': 'write',
+        #     'book_id': self.id,
+        # }
+        # self.env['library.audit'].create(audit_values)
 
-        return chbook
+        # return chbook
     
         #Delete
-    def unlink(self):
-        delbook = super(LibraryBook, self).unlink()
-        audit_values = {
-            'user_id': self.env.user.id,
-            'date': fields.Datetime.now(),
-            'operation': 'unlink',
-            'book_id': self.id,
-        }
-        self.env['library.audit'].create(audit_values)
+    # def unlink(self):
+    #     delbook = super(LibraryBook, self).unlink()
+    #     audit_values = {
+    #         'user_id': self.env.user.id,
+    #         'date': fields.Datetime.now(),
+    #         'operation': 'unlink',
+    #         'book_id': self.id,
+    #     }
+    #     self.env['library.audit'].create(audit_values)
 
-        return delbook
+    #     return delbook
