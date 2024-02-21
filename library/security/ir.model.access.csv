@@ -5,6 +5,7 @@ access_res_partner,access.res.partner,model_res_partner,base.group_user,1,1,1,1
 access_sale_order,access.sale.order,model_sale_order,base.group_user,1,1,1,1
 access_library_genre,access.library.genre,model_library_genre,base.group_user,1,1,1,1
 access_library_audit,access.library.audit,model_library_audit,base.group_user,1,1,1,1
+access_library_audit_mixing,access.library.audit.mixing,model_library_audit_mixing,base.group_user,1,1,1,1
 access_library_component,access.library.component,model_library_component,base.group_user,1,1,1,1
 access_library_dealer_line,access.library.dealer.line,model_library_dealer_line,base.group_user,1,1,1,1
 access_books_editorial_line,access.books.editorial.line,model_books_editorial_line,base.group_user,1,1,1,1
