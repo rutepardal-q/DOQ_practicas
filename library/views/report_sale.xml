@@ -2,12 +2,24 @@
 
 <odoo>
     <data>
+    <!-- COMMISSIONS -->
+
+        <template id="custom_report_sale_document" 
+                inherit_id="sale.report_saleorder_document">
+            <xpath expr="//span[@t-field='doc.user_id']" position="replace">
+                <t t-foreach="doc.commission_line_ids" t-as="commission">
+                    <t><span t-field="commission.name"/></t>
+                </t> 
+            </xpath>
+        </template>
+
+<!-- MEMBER NUMBER -->
         <template id="book_report_sale_inherit" 
                 name="Show Member Number" 
                 inherit_id="sale.report_saleorder_document"
                 customize_show="True" 
                 priority="30">
-            <xpath expr="//div[@class='row mt-4 mb-2' and @id='informations']" 
+            <xpath expr="//div[@id='informations']" 
             position="inside">
                 <div t-if="doc.partner_id.member_id" class="col-auto col-3 mw-100 mb-2">
                     <strong>Member Number: </strong><br/>
@@ -16,5 +28,22 @@
             </xpath>
         </template>
 
+        <!-- PRODUCT LINES -->
+        <template id="custom_report_sale_document" inherit_id="sale.report_saleorder_document">
+
+            <xpath expr="//span[@t-field='line.product_uom_qty']" position="attributes">
+                <attribute name="t-if">line.product_id and line.product_id.type != 'service'</attribute>
+            </xpath>
+            <xpath expr="//span[@t-field='line.product_uom']" position="attributes">
+                <attribute name="t-if">line.product_id and line.product_id.type != 'service'</attribute>
+            </xpath>
+
+            <xpath expr="//div[@t-if='doc.user_id.name']" position="before">
+                <div t-if="doc.origin" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Origin:</strong>
+                    <p class="m-0" t-field="doc.origin"/>
+                </div>
+            </xpath>
+        </template>
     </data>
 </odoo>

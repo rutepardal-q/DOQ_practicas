@@ -3,8 +3,9 @@ from odoo import models, fields, api, exceptions, _
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+    #_inherit = 'sale.order.line'
 
-   # @api.multi
+       # Only sell to members
     def action_confirm(self):
         for order in self:
             # Importing the necessary model within the method to avoid circular import
@@ -21,4 +22,16 @@ class SaleOrder(models.Model):
 
         return res
 
-
+     # PART OF PRATICAS SOLUTIONS, ONLY IMPLEMENT IF NECESSARY FOR NEW EXERCISES
+    #Pack components on Sales Orders
+    """@api.onchange('product_id')
+    def product_id_change(self):
+        res = super().product_id_change()
+        if self.product_id and self.product_id.is_pack and \
+           self.product_id.component_line_ids:
+            self.name += _('\n-- Components --')
+            for line in self.product_id.component_line_ids:
+                self.name += '\n %s - %i' % (line.component_id.name,
+                                             line.quantity)
+        return res
+"""

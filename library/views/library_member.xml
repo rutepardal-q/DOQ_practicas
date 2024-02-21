@@ -7,4 +7,5 @@
         <field name="context">{'default_is_member': True}</field>
     </record>
 
+
 </odoo>
