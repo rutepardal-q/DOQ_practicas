@@ -1,0 +1,43 @@
+
+<odoo>
+    <record id="action_view_books_rented" model="ir.actions.act_window">
+        <field name="name">Rented Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('state', '=', "renting")]</field>
+    </record>
+
+</odoo>
+
+   <!-- FOR RENTING BOOKS BUTTON 
+
+    <record id="view_rental_tree" model="ir.ui.view">
+        <field name="name">rental.tree</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree>
+
+                <field name="name"/>
+
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_rented_books" model="ir.actions.act_window">
+        <field name="name">Rented Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_rental_tree"/>
+        <field name="domain">[('renting_member', '=', active_id)]</field>
+        <field name="context">{'default_renting_member': active_id}</field>
+    </record>
+
+</odoo>
+
+
+-->
+
+
+
+

@@ -1,6 +1,7 @@
 <odoo>
+ <!-- REMOVE PAGE NUMBERS -->
     <template id="book_layout" inherit_id="web.external_layout_bold">
-        <xpath expr="//div[@class='col-1']" position="attributes">
+        <xpath expr="//div[@hasclass='col-1']" position="attributes">
             <attribute name="class"/>            
         </xpath>
     </template>

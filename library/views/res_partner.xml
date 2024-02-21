@@ -1,6 +1,7 @@
 
 <odoo>
-    <!-- res.partner inherit form view -->
+
+       <!-- res.partner inherit form view -->
     <record id="view_partner_form" model="ir.ui.view">
         <field name="name">view_partner_form</field>
         <field name="model">res.partner</field>
@@ -9,19 +10,106 @@
             <xpath expr="//field[@id='individual']" position="attributes">
                 <attribute name="readonly">is_author or is_member</attribute> 
             </xpath>
+
             <xpath expr="//field[@name='vat']" position="after">
-                <field name="is_author"/>
-                <field name="is_member"/>
-                <field name="member_id" 
-                    invisible="is_member == False"/>
+                
+                <!-- GENERAL -->
                 <field name="first_name" />
                 <field name="last_name" />
+
+                <field name="is_author"/>
+                <field name="is_member"/>
+
+                <!-- MEMBERS -->
+                <field name="member_id" 
+                    invisible="is_member == False"/>      
+                <!-- AUTHORS -->
                 <field name="genre_ids" 
                     widget="many2many_tags" 
                     invisible="is_author == False"/>
+                <field name="book_ids" 
+                    widget="many2many_tags" 
+                    invisible="is_author == False"/>
+
+                <!-- COMMERCIALS -->
+            </xpath>
+            <xpath expr="//group[@name='sale']/field[@name='user_id']" position="after">
+                <field name="is_commercial"/>
+                <field name="commercial_code" 
+                    invisible = "is_commercial == False"/>
+                <field name="commission" 
+                    invisible = "is_commercial == False"/>
+
             </xpath>
         </field>
     </record>
 
 
+
+    <record id="view_res_partner_filter" model="ir.ui.view">
+        <field name="name">res.partner.inherit.view.search</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='type_company']" position="after">
+                <filter string="Commercials" name="commercial" domain="[('is_commercial', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Add contextual button on member form view -->
+    <record id="partner_view_buttons_members_inherit" model="ir.ui.view">
+        <field name="name">partner.view.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field eval="1" name="priority"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                    <button type="object" class="oe_stat_button" icon="fa-book" name="action_show_rented_books"
+                        context="{'default_partner_id': id}"
+                        invisible = "is_member == False">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_text">Rented Books</span>
+                        </div>
+                    </button>
+                </div>
+        </field>
+    </record>
+
+
+
+<!-- Add contextual button on author form view -->
+    <record id="partner_view_buttons_authors_inherit" model="ir.ui.view">
+        <field name="name">partner.view.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field eval="1" name="priority"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="after"> 
+                <field name="total_sales_amount_text" widget="badge"/> 
+            </div>            
+            <div name="button_box" position="inside">                       
+                    <button type="object" class="oe_stat_button" icon="fa-book" name="action_show_available_books"
+                        context="{'default_partner_id': id}"
+                        invisible = "is_author == False">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_text">Available Books</span>
+                        </div>
+                    </button>
+                </div>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
 </odoo>
+

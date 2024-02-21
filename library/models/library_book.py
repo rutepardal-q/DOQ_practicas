@@ -4,16 +4,13 @@ class LibraryBook(models.Model):
     _name = "library.book"
     _description = "Book Information"
 
-    _inherits = {'product.product': 'product_id', 'res.partner':'contact_id'}
+    _inherits = {'product.product': 'product_id'}
 
-
-    name = fields.Char(string="Name", required=True)
+# Book basics
     synopsis = fields.Html(string='Synopsis')
     year = fields.Integer(string='Published in')
-    
-    price = fields.Float(string="Price")
     edition = fields.Integer(string="Edition")
-    is_book= fields.Boolean(string="Book", default= True, readonly= True)
+    barcode = fields.Char(string='ISBN')
     book_type = fields.Selection(
         string="Type", 
         selection = [("printed", "Printed"), ("digital", "Digital")]
@@ -23,19 +20,52 @@ class LibraryBook(models.Model):
         string="Purchased", 
         default= False
         )
-    time_purchased = fields.Datetime(string = "Time Purchased")
+    time_purchased = fields.Datetime(string="Time Purchased")
+    
+
+
+    # Connection to Products
+    product_id = fields.Many2one('product.product', string='Product', auto_join=True, required=True, ondelete='cascade')
+
+    # Connection to Contacts: Authors
+    author_id = fields.Many2one(
+        'res.partner', 
+        string='Author', 
+        required=True, 
+        ondelete='cascade', 
+        domain="[('is_author', '=', True)]"
+        )
+    
+   #GENRE
+    genre_ids = fields.Many2many(
+        comodel_name='library.genre', 
+        string='Genres', 
+        required=True, 
+        ondelete='cascade',
+        )
+
+
+
+    # Dealers and Editorial Line
+    dealer_line_ids = fields.One2many(
+        comodel_name='library.dealer.line',
+        inverse_name='book_id', string='Dealers')
+    editorial_line_ids = fields.One2many(
+        comodel_name='books.editorial.line',
+        inverse_name='book_id', string='Editorial')
+    
+    # Packs and their components
+
     is_pack = fields.Boolean(string='Pack')
     pack = fields.Selection(
         string='Type of Pack', 
-        selection=[('collection', 'Collection'), ('series', 'Series')]
-        )
-    
-    
-    product_id = fields.Many2one('product.product', string='Product', required=True, ondelete='cascade')
-    contact_id = fields.Many2one('res.partner', string='Author', required=True, ondelete='cascade', domain="[('is_author', '=', True)]")
-    genre_id = fields.Many2many(comodel_name='library.genre', string='Genre', required=True, ondelete='cascade')
-    component_ids = fields.One2many(comodel_name='library.component', inverse_name='pack_id', string='Components')
-    
+       selection=[('collection', 'Collection'), ('series', 'Series')]
+    )
+     
+    component_ids = fields.One2many(
+        comodel_name='library.component', 
+        inverse_name='pack_id', 
+        string='Components')
     
     @api.onchange("is_pack")
     def _onchange_is_pack(self):
@@ -43,21 +73,110 @@ class LibraryBook(models.Model):
             self.pack = "collection"
         if not self.is_pack:
             self.pack = ""
+    
+    # Price must be positive
+    @api.constrains('list_price')
+    def _check_price(self):
+        for record in self:
+            if record.list_price < 0:
+                raise exceptions.ValidationError("The price should be positive!")
+            
+    # RENTING
+    
+    # State
+    state = fields.Selection(
+        selection=[('in_stock', 'In Stock'),
+                ('renting', 'Renting'),
+                ('lost', 'Lost')], 
+                required=True,
+                default= "in_stock")
 
-    def create(self, values):
-        newbook = super(LibraryBook, self).create(values)
+    available = fields.Boolean(compute="_compute_available", store=True)
 
-        audit_values = {
-            'user_id': self.env.user.id,
-            'date': fields.Datetime.now(),
-            'operation': 'create',
-            'book_id': newbook.id,
-            }
-        self.env['library.audit'].create(audit_values)
+    # Avalable only when In Stock
+    @api.depends('state')
+    def _compute_available(self):
+        for rec in self:
+            rec.available = rec.state == "in_stock"
+    
+    #Dates and members
+            
+    @api.onchange('state')
+    def _onchange_state(self):
+        for rec in self:
+            if rec.state == 'in_stock':
+                rec.return_date = fields.Datetime.now()
+            elif rec.state == 'renting':
+                rec.return_date = False
 
-        return newbook 
+    renting_member = fields.Many2one('res.partner', string='Renting Member', required=True, ondelete='cascade', domain="[('is_member', '=', True)]")        
+    
+    last_renting_date = fields.Datetime(string='Last Renting')
+    
+   
+    
+    rental_date = fields.Datetime(string='Rental Date', default=fields.Datetime.now)
+    return_date = fields.Datetime(string='Return Date')
 
+    #Authors and rented books
+    """
+    author_rentedbooks = fields.Many2one('library.book', string="Author's Rented Books", compute='_compute_author_rentedbooks', store=True)
+
+    @api.depends('author_id')
+    def _compute_author_rentedbooks(self):
+        for book in self:
+            # Find all books by the author
+            author_books = self.env['library.book'].search([('author_id', '=', book.author_id.id)])
+
+            # Find all rentals of those books
+            rents = self.env['library.book'].search([('state', '=', 'renting'),('name', 'in', author_books.ids)])
+
+            # Use mapped to get the book from the recordset of rentals
+            rented_books = rents.mapped('name')
+
+            # Filter books that are not in the list of rentals
+            available_books = author_books - rented_books
+
+            # Set the result in the computed Many2one field
+            book.available_books = available_books and available_books[0] or False
+
+
+    """
+
+    # AUDIT BOOKS
+
+    #New book
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'barcode' in vals and vals['barcode']:
+                if self.search([('barcode', '=', vals['barcode'])]):
+                    raise exceptions.UserError("There is a book with the same ISBN %s" %
+                                    vals['barcode'])
+                if len(vals['barcode']) != 13:
+                    raise exceptions.UserError("The ISBN must to have 13 characters")        
+        newbooks = super().create(vals_list)
+        for newbook in newbooks:
+            audit_values = {
+                'user_id': self.env.user.id,
+                'date': fields.Datetime.now(),
+                'operation': 'create',
+                'book_id': newbook.id,
+                }
+            self.env['library.audit'].create(audit_values)
+
+        return newbooks 
+    
+    # Change
     def write(self, values):
+        if values.get('state') and values.get('state') == 'renting':
+            values['last_renting_date'] = fields.Datetime.now()
+        if 'barcode' in values and values['barcode']:
+                if self.search([('barcode', '=', values['barcode'])]):
+                    raise exceptions.UserError("There is a book with the same ISBN %s" %
+                                    values['barcode'])
+                if len(values['barcode']) != 13:
+                    raise exceptions.UserError("The ISBN must to have 13 characters")       
         chbook = super(LibraryBook, self).write(values)
         audit_values = {
             'user_id': self.env.user.id,
@@ -69,6 +188,7 @@ class LibraryBook(models.Model):
 
         return chbook
     
+        #Delete
     def unlink(self):
         delbook = super(LibraryBook, self).unlink()
         audit_values = {
@@ -80,9 +200,3 @@ class LibraryBook(models.Model):
         self.env['library.audit'].create(audit_values)
 
         return delbook
-    
-    @api.constrains('price')
-    def _check_price(self):
-        for record in self:
-            if record.price < 0:
-                raise exceptions.ValidationError("The price should be positive!")

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- DISABLED!! ONLY IMPLEMENT IF NECESSARY FOR FOLLWING EXERCICISES -->
+<odoo>
+    <!-- CARACTERISTAS DOS LIVROS NO FORMULÁRIO DE PRODUTO -->
+
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.inherit.view.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+        <!-- IS PACK -->
+            <xpath expr="//div[@name='options']" position="inside">
+                <div>
+                    <field name="is_pack"/>
+                    <label for="is_pack"/>
+                </div>
+            </xpath>
+            <!-- PRICE -->
+            <!-- Only readable when option Sum of Componets selected-->
+            <xpath expr="//field[@name='list_price']" position="attributes">
+                <attribute name="readonly">[('is_pack','=',True), "|", ('price_pack_method', '=', 'component_total')]</attribute>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Pack Options" name="pack"
+                    invisible='is_pack == False'>
+
+                    <!-- Currency-->
+                    <group string="Options" col="4">
+                        <field name="price_pack_method"/>
+                        <field name="list_price" widget="monetary" readonly = "[('is_pack == True'), ('price_pack_method == component_total')]"
+                        options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                    </group>
+                    <!-- Component Lines-->
+                    <separator string="Component Lines" />
+                    <field name="component_line_ids">
+                        <tree editable="bottom">
+                            <field name="component_id"/>
+                            <field name="quantity"/>
+                            <field name="price"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Filter -->
+    <record id="product_template_search_view" model="ir.ui.view">
+        <field name="name">product.template.inherit.view.search</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='consumable']" position="after">
+                <filter string="Packs" name="packs" domain="[('is_pack', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

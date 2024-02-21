@@ -22,8 +22,8 @@
                     <img t-attf-src="data:image/*;base64,{{o.image_1920}}" style="max-width: 100px;"/>
                 </p>
                  
-                <p t-if="o.contact_id">
-                    <strong>Author:</strong> <span t-field="o.contact_id" style="font-size: 15px;"/>
+                <p t-if="o.author_id">
+                    <strong>Author:</strong> <span t-field="o.author_id" style="font-size: 15px;"/>
                 </p>
 
                 <p t-if="o.year">

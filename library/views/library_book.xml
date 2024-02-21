@@ -15,11 +15,11 @@
                             <field name="year"/>
                             <field name="url" 
                                     invisible="is_pack == True"/>
-                            <field name="product_id"/>
+                            <field name="product_id" readonly="True" required="False"/>
                             <field name="edition"
                                     invisible="is_pack == True"/>
-                            <field name="contact_id"/>
-                            <field name="genre_id"
+                            <field name="author_id" context="{'default_is_author': True}" options="{'no_quick_create': True}"/>
+                            <field name="genre_ids"
                                 widget="many2many_tags"/>
                             <field name="synopsis"/>
                         </group>
@@ -29,11 +29,34 @@
                             options="{'preview_image': 'image_128'}" 
                             class="bg-view"/>
                             <field name="book_type"/>
-                            <field name="price"/>
+                            <field name="list_price"/>
+                            <field name="barcode" />
+                            <field name="state" />
+                            <field name="renting_member" 
+                                invisible="state != 'renting'"
+                                options="{'no_create': True}"/>
+                            <field name="last_renting_date" />
+                            <field name="available" />
                             <field name="is_purchased"/>
                             <field name="time_purchased"/>
                         </group>
+
+                        <field name="dealer_line_ids">
+                            <tree editable="bottom">
+                                <field name="dealer_id"/>
+                                <field name="price_unit"/>
+                                <field name="sale_unit"/>
+                            </tree>
+                        </field>  
+
+                        <field name="editorial_line_ids">
+                            <tree editable="bottom">
+                                <field name="editorial_id"/>
+                                <field name="page_number"/>
+                            </tree>
+                        </field>
                     </group>
+
                     <notebook invisible="is_pack == False">
                         <!-- Sheet for components -->
                         <page string="Component List">
@@ -55,11 +78,14 @@
         <field name="name">library.book.view.tree</field>
         <field name="model">library.book</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree>        
+                <field name="is_pack"/>                
                 <field name="name"/>
-                <field name="is_pack"/>
-                <field name="product_id"/>
-                <field name="contact_id"/>
+                <field name="edition" />
+                <field name="author_id"/>
+                <field name="genre_ids" widget="many2many_tags"/> 
+                <field name="state" />
+                <field name="last_renting_date" />
             </tree>
         </field>
     </record>
@@ -77,6 +103,9 @@
         </field>
     </record>
 
+
+
+
     <!-- This Menu Item must have a parent and an action -->
     <menuitem name="Library"
         id="library_main_menu"
@@ -93,8 +122,8 @@
         <field name="arch" type="xml">
             <search string="Book Search">
                 <field name="name"/>
-                <field name="contact_id"/>
-                <field name="genre_id"/>
+                <field name="author_id"/>
+                <field name="genre_ids"/>
                 <field name="book_type"/>
                 <filter string="Packs" name="is_pack" domain="[('is_pack','=',True)]"/>
                 <filter string="Collection" name="pack" domain="[('is_pack','=',True),('pack', '=', 'collection')]"/>
@@ -105,5 +134,4 @@
         </field>
     </record>
 
-
-</odoo>
+ </odoo>
