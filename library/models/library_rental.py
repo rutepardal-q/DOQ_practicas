@@ -11,4 +11,5 @@ class LibraryRental(models.Model):
     maxend_date = fields.Datetime(string='Return Before')
     end_date = fields.Datetime(string='Return Date')
     rental_state = fields.Selection([('available', 'Available'),('pending', 'Pending Return'), ('returned', 'Returned')], default='pending')
-
+    genre = fields.Many2many(related='rented_book.genre_ids', string='Genre')
+    
