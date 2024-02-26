@@ -1,0 +1,45 @@
+<odoo>
+    <data>
+        <record id= "view_renting_wizard" model= "ir.ui.view"> 
+            <field name="name">Rent</field>
+            <field name="model">library.renting.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Renting Form">
+                    <group>
+                        <field name="start_date"/>                    
+                        <field name="maxend_date"/>                    
+                    </group>
+                    <separator string="Members"/>
+                    <field name="renting_member"/>
+                    <separator string="Books"/>
+                    <field name="rented_book"/>
+                    <!-- <field name="barcode"/> -->
+                    <footer>
+                        <button
+                            name="action_confirm_renting_button"
+                            string="Confirm"
+                            type="object"
+                            class="btn-primary"/>
+                        <button
+                            string="Cancel"
+                            type="object"
+                            class="btn-secondary"
+                            special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id= "action_renting_wizard" model= "ir.actions.act_window"> 
+            <field name="name">Rent Books</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">library.renting.wizard</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    
+
+    </data>
+</odoo>

@@ -57,13 +57,28 @@
         </field>
     </record>
 
-<!-- Add contextual button on member form view -->
+<!-- Member Form View - Button with Deactivate and Rented Books -->
     <record id="partner_view_buttons_members_inherit" model="ir.ui.view">
         <field name="name">partner.view.buttons</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field eval="1" name="priority"/>
         <field name="arch" type="xml">
+            <div name="button_box" position="after"> 
+                <header>
+                    <button 
+                        name="action_deactivate_members_wizard" 
+                        id="deactivate_member_button" 
+                        string="Deactivate Member" 
+                        context="{'default_active_id': active_id}"
+                        type="object" data-hotkey="g"
+                        invisible = "is_member == False" class="btn-primary">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_text">Deactivate Member</span>
+                        </div>
+                    </button>
+                </header>
+            </div>   
             <div name="button_box" position="inside">
                     <button type="object" class="oe_stat_button" icon="fa-book" name="action_show_rented_books"
                         context="{'default_partner_id': id}"
@@ -86,7 +101,7 @@
         <field eval="1" name="priority"/>
         <field name="arch" type="xml">
             <div name="button_box" position="after"> 
-                <field name="total_sales_amount_text" widget="badge"/> 
+                <field name="total_sales_amount_text" widget="badge" invisible = "is_author == False"/> 
             </div>            
             <div name="button_box" position="inside">                       
                     <button type="object" class="oe_stat_button" icon="fa-book" name="action_show_available_books"
@@ -100,15 +115,17 @@
         </field>
     </record>
 
+    <!-- Sequence for member_id -->
 
-
-
-
-
-
-
-
-
+    <record id="sequence_member_id_abdc" model="ir.sequence">
+        <field name="name">Member ID Sequence abdc</field>
+        <field name="code">task.abdc</field>
+        <field name="active">TRUE</field>
+        <field name="prefix">SOC</field>
+        <field name="padding">6</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
 
 
 </odoo>

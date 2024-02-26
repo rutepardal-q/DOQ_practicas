@@ -1,0 +1,29 @@
+<odoo>
+  <data>
+    <record id="deactivate_members_wizard_view_form" model="ir.ui.view">
+        <field name="name">library.deactivate.members.wizard.view.form</field>
+        <field name="model">library.deactivate.members.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Deactivate Member">
+                <sheet>
+                    <group>
+                       <field name="motive_deact"/>
+                    </group>
+                </sheet>
+              <footer>
+                <button
+                  name="action_confirm_deact_button"
+                  string="Confirm"
+                  type="object"
+                  class="btn-primary"/>
+                <button
+                  string="Cancel"
+                  type="object"
+                  class="btn-secondary"
+                  special="cancel"/>
+              </footer>
+            </form>
+        </field>
+    </record>
+  </data>
+</odoo>

@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <record id= "view_returning_wizard" model= "ir.ui.view"> 
+            <field name="name">view.returning.wizard</field>
+            <field name="model">library.returning.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Returning Form">
+                    <group>                
+                        <field name="end_date"/>                    
+                    </group>
+                    <separator string="Members"/>
+                    <field name="renting_member"/>
+                    <separator string="Books"/>
+                    <field name="rented_book"/>
+                    <footer>
+                        <button
+                            name="action_confirm_returning_button"
+                            string="Confirm"
+                            type="object"
+                            class="btn-primary"/>
+                        <button
+                            string="Cancel"
+                            type="object"
+                            class="btn-secondary"
+                            special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id= "action_returning_wizard" model= "ir.actions.act_window"> 
+            <field name="name">Renturn Books</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">library.returning.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    
+
+    </data>
+</odoo>

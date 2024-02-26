@@ -84,47 +84,55 @@ class LibraryBook(models.Model):
                 raise exceptions.ValidationError("The price should be positive!")
             
     # RENTING
+            
+    rental_ids = fields.One2many('library.rental', inverse_name='rented_book', string='Rental')
+    rental_state = fields.Selection(related='rental_ids.rental_state', string='Rental State', readonly=True)
+    renting_member = fields.Integer(string='Renting Member', readonly=True, default='available')
+
+
+    # available = fields.Boolean(compute="_compute_available", store=True)
+
+    # # Avalable only when not renting
+    # @api.depends('renting_state')
+    # def _compute_available(self):
+    #     for rec in self:
+    #         rec.available = rec.state == "in_stock"
+
+
     
-    # State
-    state = fields.Selection(
-        selection=[('in_stock', 'In Stock'),
-                ('renting', 'Renting'),
-                ('lost', 'Lost')], 
-                required=True,
-                default= "in_stock")
+    # # State
+    # state = fields.Selection(
+    #     selection=[('in_stock', 'In Stock'),
+    #             ('renting', 'Renting'),
+    #             ('lost', 'Lost')], 
+    #             required=True,
+    #             default= "in_stock")
 
-    available = fields.Boolean(compute="_compute_available", store=True)
 
-    # Avalable only when In Stock
-    @api.depends('state')
-    def _compute_available(self):
-        for rec in self:
-            rec.available = rec.state == "in_stock"
+
+
     
     #Dates and members
             
-    @api.onchange('state')
-    def _onchange_state(self):
-        for rec in self:
-            if rec.state == 'in_stock':
-                rec.return_date = fields.Datetime.now()
-            elif rec.state == 'renting':
-                rec.return_date = False
+    # @api.onchange('state')
+    # def _onchange_state(self):
+    #     for rec in self:
+    #         if rec.state == 'in_stock':
+    #             rec.return_date = fields.Datetime.now()
+    #         elif rec.state == 'renting':
+    #             rec.return_date = False
 
-    renting_member = fields.Many2one('res.partner', string='Renting Member', required=True, ondelete='cascade', domain="[('is_member', '=', True)]")        
+    # renting_member = fields.Many2one('res.partner', string='Renting Member', required=True, ondelete='cascade', domain="[('is_member', '=', True)]")        
     
-    last_renting_date = fields.Datetime(string='Last Renting')
+    # last_renting_date = fields.Datetime(string='Last Renting')
     
    
     
-    rental_date = fields.Datetime(string='Rental Date', default=fields.Datetime.now)
-    return_date = fields.Datetime(string='Return Date')
+    # rental_date = fields.Datetime(string='Rental Date', default=fields.Datetime.now)
+    # return_date = fields.Datetime(string='Return Date')
 
 
-
-    # AUDIT BOOKS
-
-    #New book
+    #Barcode
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -134,48 +142,14 @@ class LibraryBook(models.Model):
                                     vals['barcode'])
                 if len(vals['barcode']) != 13:
                     raise exceptions.UserError("The ISBN must to have 13 characters")        
-        # newbooks = super().create(vals_list)
-        # for newbook in newbooks:
-        #     audit_values = {
-        #         'user_id': self.env.user.id,
-        #         'date': fields.Datetime.now(),
-        #         'operation': 'create',
-        #         'book_id': newbook.id,
-        #         }
-        #     self.env['library.audit'].create(audit_values)
 
-        # return newbooks 
-    
-    # Change
+
     def write(self, values):
-        if values.get('state') and values.get('state') == 'renting':
-            values['last_renting_date'] = fields.Datetime.now()
+        # if values.get('state') and values.get('state') == 'renting':
+        #     values['last_renting_date'] = fields.Datetime.now()
         if 'barcode' in values and values['barcode']:
                 if self.search([('barcode', '=', values['barcode'])]):
                     raise exceptions.UserError("There is a book with the same ISBN %s" %
                                     values['barcode'])
                 if len(values['barcode']) != 13:
                     raise exceptions.UserError("The ISBN must to have 13 characters")       
-        # chbook = super(LibraryBook, self).write(values)
-        # audit_values = {
-        #     'user_id': self.env.user.id,
-        #     'date': fields.Datetime.now(),
-        #     'operation': 'write',
-        #     'book_id': self.id,
-        # }
-        # self.env['library.audit'].create(audit_values)
-
-        # return chbook
-    
-        #Delete
-    # def unlink(self):
-    #     delbook = super(LibraryBook, self).unlink()
-    #     audit_values = {
-    #         'user_id': self.env.user.id,
-    #         'date': fields.Datetime.now(),
-    #         'operation': 'unlink',
-    #         'book_id': self.id,
-    #     }
-    #     self.env['library.audit'].create(audit_values)
-
-    #     return delbook

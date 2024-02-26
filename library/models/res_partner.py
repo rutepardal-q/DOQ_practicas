@@ -8,7 +8,14 @@ class ResPartner(models.Model):
     first_name = fields.Char(string="First Name")
     last_name = fields.Char(string="Last Name")
 
-   
+    #Full Name
+    @api.onchange('first_name', 'last_name')
+    def _compute_full_name(self):
+        self.name = ''
+        if self.first_name:
+            self.name += self.first_name
+        if self.last_name:
+            self.name += ' ' + self.last_name
 
     # TYPE OF CONTACT
 
@@ -17,32 +24,45 @@ class ResPartner(models.Model):
     is_commercial = fields.Boolean(string='is Commercial', default=False)
 
     #MEMBERS
-    member_id = fields.Char(string="Member Number")
     
-    renting_member_ids = fields.One2many(
-        comodel_name='library.book', 
-        inverse_name='renting_member') 
+    # Sequence for member number generation
+    member_id = fields.Char(string="Member Number", copy=False, default='New', readonly=True)
+    
+    @api.model
+    def create(self, vals):
+        if vals.get('member_id','New') =='New':
+            vals['member_id'] = self.env['ir.sequence'].next_by_code('task.abdc') or 'New'
+
+        result = super(ResPartner, self).create(vals)
+        return result
 
 
-    rented_books_count = fields.Integer(
-        string='Rented Books Count', 
-        compute='_compute_rented_books',
-        store= False)
-    rented_books = fields.One2many(
-        'library.book', 
-        'renting_member', 
-        string='Rented Books', 
-        compute='_compute_rented_books',
-        store=False
-        )
 
 
-    @api.depends('rented_books')
-    def _compute_rented_books(self):
-        for member in self:
-            rented_books = member.rented_books.filtered(lambda book: book.state == 'renting')
-            member.rented_books_count = len(member.rented_books)
-            member.rented_books = rented_books
+    # renting_member_ids = fields.One2many(
+    #     comodel_name='library.book', 
+    #     inverse_name='renting_member') 
+
+
+    # rented_books_count = fields.Integer(
+    #     string='Rented Books Count', 
+    #     compute='_compute_rented_books',
+    #     store= False)
+    # rented_books = fields.One2many(
+    #     'library.book', 
+    #     'renting_member', 
+    #     string='Rented Books', 
+    #     compute='_compute_rented_books',
+    #     store=False
+    #     )
+
+
+    # @api.depends('rented_books')
+    # def _compute_rented_books(self):
+    #     for member in self:
+    #         rented_books = member.rented_books.filtered(lambda book: book.state == 'renting')
+    #         member.rented_books_count = len(member.rented_books)
+    #         member.rented_books = rented_books
 
 
     def action_show_rented_books(self):
@@ -61,6 +81,25 @@ class ResPartner(models.Model):
                     'delete': False,
                 },
             }
+
+    #Deactivate Members - open Wizard
+        
+
+    def action_deactivate_members_wizard(self):
+        if self and self.is_member:
+            self.ensure_one()
+            context = {'default_active_id': self.id}
+            return {
+                'name': 'Deactivate Membership',
+                'type': 'ir.actions.act_window',
+                'res_model': 'library.deactivate.members.wizard',
+                'view_mode': 'form',
+                'view_id': self.env.ref('library.deactivate_members_wizard_view_form').id,
+                'target': 'new',
+                'context': context,
+            }
+   
+
 
 
     #AUTHORS
@@ -92,16 +131,16 @@ class ResPartner(models.Model):
 
 
 
-    @api.depends('book_ids')
-    def _compute_available_books(self):
-        for author in self:
-            # Find all rented books by the author
-            rented_books = author.book_ids.filtered(lambda book: book.state == 'renting')
-            # Filter books that are not in the list of rented books
-            available_books = author.book_ids - rented_books
+    # @api.depends('book_ids')
+    # def _compute_available_books(self):
+    #     for author in self:
+    #         # Find all rented books by the author
+    #         rented_books = author.book_ids.filtered(lambda book: book.state == 'renting')
+    #         # Filter books that are not in the list of rented books
+    #         available_books = author.book_ids - rented_books
 
-            # Set the result in the computed Many2one field
-            author.available_books = available_books # and available_books[0] or False
+    #         # Set the result in the computed Many2one field
+    #         author.available_books = available_books # and available_books[0] or False
 
     def action_show_available_books(self):
         if self and self.is_author:
@@ -138,14 +177,7 @@ class ResPartner(models.Model):
             rec.total_sales_amount_text = f'Sold Books: {rec.total_sales_amount}'
 
 
-    #Full Name
-    @api.onchange('first_name', 'last_name')
-    def _compute_full_name(self):
-        self.name = ''
-        if self.first_name:
-            self.name += self.first_name
-        if self.last_name:
-            self.name += ' ' + self.last_name
+
     
     #Commercials
     commercial_code = fields.Char(copy=False)

@@ -1,4 +1,4 @@
-
+<!-- 
 <odoo>
     <record id="action_view_books_rented" model="ir.actions.act_window">
         <field name="name">Rented Books</field>
@@ -7,7 +7,7 @@
         <field name="domain">[('state', '=', "renting")]</field>
     </record>
 
-</odoo>
+</odoo> -->
 
    <!-- FOR RENTING BOOKS BUTTON 
 
