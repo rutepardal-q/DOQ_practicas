@@ -1,0 +1,27 @@
+<odoo>
+    
+    <data>    
+        
+        <record id= "view_tree_rental_history_wizard" model= "ir.ui.view"> 
+            <field name="name">view.tree.rental.history.wizard</field>
+            <field name="model">library.renting.wizard</field>
+            <field name="arch" type="xml">
+                <tree string="Renting Tree" create="0" delete="0">
+                    <field name="start_date"/>                    
+                    <field name="end_date"/>                    
+                
+                    <field name="renting_member"/>
+                    <field name="rented_book"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id= "library.rental_history_action" model= "ir.actions.act_window"> 
+            <field name="name">library.rental.history.action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">library.renting.wizard</field>
+            <field name="view_mode">tree</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

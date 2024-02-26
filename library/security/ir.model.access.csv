@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_library_book,access.library.book,model_library_book,base.group_user,1,1,1,1
+access_library_rental,access.library.rental,model_library_rental,base.group_user,1,1,1,1
 access_sale_commission,access.sale.commission,model_sale_commission,base.group_user,1,1,1,1
 access_res_partner,access.res.partner,model_res_partner,base.group_user,1,1,1,1
 access_sale_order,access.sale.order,model_sale_order,base.group_user,1,1,1,1
@@ -9,5 +10,9 @@ access_library_audit_mixing,access.library.audit.mixing,model_library_audit_mixi
 access_library_component,access.library.component,model_library_component,base.group_user,1,1,1,1
 access_library_dealer_line,access.library.dealer.line,model_library_dealer_line,base.group_user,1,1,1,1
 access_books_editorial_line,access.books.editorial.line,model_books_editorial_line,base.group_user,1,1,1,1
+access_library_deactivate_members_wizard,access.library.deactivate.members.wizard,model_library_deactivate_members_wizard,base.group_user,1,1,1,1
+access_library_renting_wizard,access.renting.wizard,model_library_renting_wizard,base.group_user,1,1,1,1
+access_library_returning_wizard,access.returning.wizard,model_library_returning_wizard,base.group_user,1,1,1,1
+access_library_warning_2rent_wizard,access.library.warning.2rent.wizard,model_library_warning_2rent_wizard,base.group_user,1,1,1,1
 
 

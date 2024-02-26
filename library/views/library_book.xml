@@ -31,12 +31,10 @@
                             <field name="book_type"/>
                             <field name="list_price"/>
                             <field name="barcode" />
-                            <field name="state" />
+                            <field name="rental_state" />
                             <field name="renting_member" 
-                                invisible="state != 'renting'"
+                                invisible="rental_state != 'available'"
                                 options="{'no_create': True}"/>
-                            <field name="last_renting_date" />
-                            <field name="available" />
                             <field name="is_purchased"/>
                             <field name="time_purchased"/>
                         </group>
@@ -90,8 +88,7 @@
                 <field name="edition" />
                 <field name="author_id"/>
                 <field name="genre_ids" widget="many2many_tags"/> 
-                <field name="state" />
-                <field name="last_renting_date" />
+                <field name="rental_state" />
             </tree>
         </field>
     </record>

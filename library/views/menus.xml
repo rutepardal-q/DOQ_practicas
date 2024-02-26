@@ -9,7 +9,11 @@
         <menuitem id="menu_library_members" parent="library.data" action="action_view_partner_members" name="Members" sequence="5"/>
     <menuitem id="menu_library_adjustments" parent="library.library_main_menu" name="Adjustments" sequence="2"/>
         <menuitem id="menu_library_audit" parent="library.menu_library_adjustments" action="library.audit_action" name="Audit" sequence="1"/>
-
+    <menuitem id="renting_menu" parent="library.library_main_menu" name="Renting" sequence= "3" />
+        <menuitem id="menu_library_rental" parent="library.renting_menu" action="library.rental_action" name="Rental Info" sequence="1"/>
+        <menuitem id="menu_library_new_rent" parent="library.renting_menu" action="library.action_renting_wizard" name="New Rent" sequence="2"/>
+        <menuitem id="menu_library_return" parent="library.renting_menu" action="library.action_returning_wizard" name="Return" sequence="3"/>
+        <menuitem id="menu_library_rental_history" parent="library.renting_menu" action="library.rental_history_action" name="Rental History" sequence="4"/>
 </odoo>
 
 
