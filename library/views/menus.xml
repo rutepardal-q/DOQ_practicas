@@ -14,6 +14,7 @@
         <menuitem id="menu_library_new_rent" parent="library.renting_menu" action="library.action_renting_wizard" name="New Rent" sequence="2"/>
         <menuitem id="menu_library_return" parent="library.renting_menu" action="library.action_returning_wizard" name="Return" sequence="3"/>
         <menuitem id="menu_library_rental_history" parent="library.renting_menu" action="library.rental_history_action" name="Rental History" sequence="4"/>
+        <menuitem id="menu_library_rental_matrix" parent="library.renting_menu" action="library.rental_pivot_action" name="Rental Matrix" sequence="5"/>
 </odoo>
 
 

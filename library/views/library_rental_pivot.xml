@@ -1,0 +1,49 @@
+<odoo>
+
+    <!-- library.rental pivot view -->
+    <record id="library.rental_view_pivot" model="ir.ui.view">
+        <field name="name">library.rental.view.pivot</field>
+        <field name="model">library.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="Matrix">
+                <field name="rented_book" type='row'/>
+                <field name="start_date" type='col' interval='month'/>
+                <field name="renting_member" type='col'/>
+                
+            </pivot>
+        </field>
+    </record>
+
+    <!-- library.rental graph view -->
+    <record id="library.rental_view_graph" model="ir.ui.view">
+        <field name="name">library.rental.view.graph</field>
+        <field name="model">library.rental</field>
+        <field name="arch" type="xml">
+            <graph type='line' string="Graph" >
+                <field name="start_date" type='col' interval='month'/>                
+                <field name="rented_book" type='col'/>
+                <field name="genre" type='row' operator='group' />
+            </graph>
+        </field>
+    </record>
+
+
+
+    <!-- library.rental action window -->
+    <record id="library.rental_pivot_action" model="ir.actions.act_window">
+        <field name="name">Library Matrix</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.rental</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No records yet
+            </p>
+        </field>
+    </record>
+
+
+
+
+</odoo>

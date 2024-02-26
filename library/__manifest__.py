@@ -31,6 +31,7 @@
             "views/library_genre.xml",
             "views/library_audit.xml",
             "views/library_rental.xml",
+            "views/library_rental_pivot.xml",
             "views/library_component.xml",
             # "views/rented_books.xml",
 

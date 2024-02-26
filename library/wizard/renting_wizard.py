@@ -14,7 +14,7 @@ class RentingWizard(models.TransientModel):
 
     rental_id = fields.Many2one('library.rental', string='Rental', required=True)
     end_date = fields.Datetime(related='rental_id.end_date', string='Return Date', readonly=True)
-    # end_date = fields.Date(string='Return Date', readonly=True)
+
 
    
    
