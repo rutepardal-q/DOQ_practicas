@@ -1,0 +1,13 @@
+<odoo>
+
+    <!-- REMINDER MANUAL -->
+    <record id="server_action_send_reminder" model="ir.actions.server">
+        <field name="name">Send Library Reminder</field>
+        <field name="model_id" ref="library.model_library_rental"/>
+        <field name="state">code</field>
+        <field name="code">action_send_manual_reminder()</field>
+    </record>
+
+
+
+</odoo>

@@ -1,0 +1,19 @@
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_library_send_reminder" model="ir.cron">
+            <field name="name">Send Library Reminders</field>
+            <field name="model_id" ref="library.model_library_rental"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="state">code</field>
+            <field name="code">library.send_auto_reminder()</field>
+            <field name="doall" eval="True" />
+            <field name="nextcall" eval="(DateTime.now().replace(hour=18, minute=0, second=0, microsecond=0))"/>
+            <field name="active" eval="True" />
+        </record> 
+    </data>
+
+</odoo>
+
+
