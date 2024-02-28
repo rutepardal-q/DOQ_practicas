@@ -1,5 +1,8 @@
 <odoo>
 
+    
+
+
     <record id="library.rental_view_tree" model="ir.ui.view">
         <field name="name">library.rental.view.tree</field>
         <field name="model">library.rental</field>
@@ -11,6 +14,7 @@
                 <field name="maxend_date" invisible="rental_state != 'pending'"/>
                 <field name="end_date" invisible="rental_state != 'returned'"/>
                 <field name="rental_state"/>
+                <button name="action_send_manual_reminder" string="Send Reminder" type="object"/>
             </tree>
         </field>
     </record>
@@ -28,4 +32,19 @@
             </p>
         </field>
     </record>
+
+    <record id="action_send_reminder" model="ir.actions.act_window">
+        <field name="name">Send Reminder</field>
+        <field name="res_model">library.rental</field>
+        <field name="type">object</field>
+        <field name="domain">[('state', '=', 'pending')]</field>
+        <field name="context">{'default_model': 'library.rental', 'default_res_id': active_ids}</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="library.rental_view_tree"/>
+    </record>
+
+
+
+
+
 </odoo>

@@ -1,0 +1,38 @@
+
+
+<odoo>
+    <data>
+        <record id="email_template_library_reminder" model="mail.template">
+            <field name="name">Library Reminder</field>
+            <field name="model_id" ref="library.model_library_rental"/>
+            <!-- <field name="email_from">{{ ctx ["email_from"] }}</field>
+            <field name="partner_to">{{ ctx ["email_to"]  }}</field> -->
+            <field name="subject">Hello {{ object.renting_member.name }}, you have a book pending return</field>
+            <field name="description">Remider sent to members</field>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Hello <span style="font-weight:bold;" t-out="object.renting_member.name or ''">José Silva</span>,</p>
+                    <p>This is a reminder to return the book <span style="font-weight:bold;" t-out="object.rented_book.name or ''"></span> before <span style="font-weight:bold;" t-out="object.maxend_date or ''"></span>.</p>
+                ]]>
+
+                <!-- <![CDATA[
+                    <p>Hello ${object.renting_member.name},</p>
+                    <p>This is a reminder to return the book "${object.rented_book.name}" before ${object.maxend_date}.</p>
+                ]]> -->
+            </field>
+
+
+        </record>
+        
+        <record id="action_server_send_return_reminder" model="ir.actions.server">
+            <field name="name">Action to send return reminders</field>
+            <field name="model_id" ref="library.model_library_rental"/>
+            <field name="binding_model_id" ref="library.model_library_rental"/>
+            <field name="state">code</field>
+            <field name="code">library_rental.function_to_send_email()</field>
+        </record>
+
+
+    </data>
+
+</odoo>

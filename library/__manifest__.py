@@ -11,7 +11,7 @@
     "license": "AGPL-3",
     "application": True,
     "installable": True,
-    "depends": ['base', 'product', 'sale'],
+    "depends": ['base', 'product', 'sale', 'mail'],
     "data": [
             "security/ir.model.access.csv",
             "security/library_security.xml",
@@ -23,7 +23,7 @@
             "wizard/warning_2rent_wizard.xml",
 
 
-            # "views/layout.xml",
+
 
             "views/library_book.xml",
             "views/library_author.xml",
@@ -33,7 +33,7 @@
             "views/library_rental.xml",
             "views/library_rental_pivot.xml",
             "views/library_component.xml",
-            # "views/rented_books.xml",
+            "views/manual_reminder.xml",
 
             "views/res_partner.xml",
             "views/sale_order.xml",
@@ -42,6 +42,9 @@
             "views/report_book.xml",
             "views/report_sale.xml",
             "views/report_invoices.xml",
+
+            "data/ir_cron.xml",
+            "data/library_rent_mail_template.xml",
 
 
             "views/menus.xml",

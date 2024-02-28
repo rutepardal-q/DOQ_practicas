@@ -1,0 +1,31 @@
+<!-- 
+<odoo>    
+    <record id="library_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@string='Other Settings']" position="before">
+                <page string="Library Settings">
+                    <group>
+                        <field name="days_before_reminder"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="action_library_settings" model="ir.actions.act_window">
+        <field name="name">Library Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="library.library_settings_view_form"/>
+        <field name="view_type">form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click 'Create' to configure your module settings.
+            </p>
+        </field>
+    </record>
+</odoo> -->
